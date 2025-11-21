@@ -16,6 +16,10 @@ model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
+
+seeds:
+  +schema: raw
+
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 

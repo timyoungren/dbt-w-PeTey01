@@ -1,6 +1,25 @@
 
 version: 2
 
+sources:
+  - name: raw
+    schema: dbt_timyoungren_dev_raw
+    tables:
+      - name: customers
+        description: "Raw customers data loaded from dbt seeds."
+        # loaded_at_field: signup_date
+        loaded_at_field: "CAST(signup_date AS TIMESTAMP)"
+        freshness:
+          warn_after: {count: 1000, period: day}
+          error_after: {count: 2000, period: day}
+
+      - name: orders
+        description: "Raw orders data loaded from dbt seeds."
+        loaded_at_field: "CAST(order_date AS TIMESTAMP)"
+        freshness:
+          warn_after: {count: 1000, period: day}
+          error_after: {count: 2000, period: day}
+
 models:
     - name: my_first_dbt_model
       description: "A starter dbt model"
@@ -11,11 +30,20 @@ models:
                 - unique
                 - not_null
 
-    - name: my_second_dbt_model
-      description: "A starter dbt model"
-      columns:
-          - name: id
-            description: "The primary key for this table"
+          - name: status
+            description: "Is it Open or Closed?"
             tests:
-                - unique
-                - not_null
+                - accepted_values:
+                    arguments:
+                      values: ['Open','Closed']
+
+    - name: my_second_dbt_model
+      description: "Child model used to demonstrate relationship tests."
+      columns:
+          - name: parent_id
+            description: "Foreign key referencing my_first_dbt_model.id"
+            tests:
+                - relationships:
+                    arguments:
+                      to: ref('my_first_dbt_model')
+                      field: id

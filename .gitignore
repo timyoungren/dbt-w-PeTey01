@@ -1,5 +1,22 @@
 # you shouldn't commit these into source control
 # these are the default directory names, adjust/add to fit your needs
-target/
+# Ignore virtual environments
+venv/
+.env/
+ENV/
+env/
+
+# Ignore dbt artifactstarget/
 dbt_packages/
 logs/
+target/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+
+# VS Code
+.vscode/

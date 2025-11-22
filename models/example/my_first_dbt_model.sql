@@ -11,9 +11,11 @@
 
 with source_data as (
 
-    select 1 as id, "Hello, Tim!" as greeting
+    select 1 as id, "Hello, Tim!" as greeting, 'Open' as status
     union all
-    select null as id, "Hello, PeTey!" as greeting
+    select 2 as id, "Hello, PeTey!" as greeting, 'Open' as status
+    union all
+    select 3 as id, "Hello, window!" as greeting, 'Closed' as status
 
 )
 

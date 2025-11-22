@@ -12,6 +12,15 @@ sources:
         freshness:
           warn_after: {count: 1000, period: day}
           error_after: {count: 2000, period: day}
+        columns:
+          - name: id
+            description: "PK for the customer."
+          - name: first_name
+            description: "Customer's first name."
+          - name: last_name
+            description: "Customer's last name."
+          - name: signup_date
+            description: "Date customer initially signed up."
 
       - name: orders
         description: "Raw orders data loaded from dbt seeds."
@@ -19,26 +28,44 @@ sources:
         freshness:
           warn_after: {count: 1000, period: day}
           error_after: {count: 2000, period: day}
+        columns:
+          - name: id
+            description: "Primary key for the order."
+            tests:
+              - no_dupe_ids
+          - name: customer_id
+            description: "Foreign key to customers.id."
+          - name: order_date
+            description: "Date when the order was placed."
+            tests:
+              - no_future_dates
+          - name: status
+            description: "Order status (e.g., completed, canceled, shipped)."
+            tests:
+                - accepted_values:
+                    arguments:
+                      values: ['open','shipped','canceled','completed']
 
 models:
     - name: my_first_dbt_model
-      description: "A starter dbt model"
+      description: "A starter dbt model for learning. Creates its own data in a unioned select."
       columns:
           - name: id
-            description: "The primary key for this table"
+            description: "PK for greetings."
             tests:
                 - unique
                 - not_null
+                - no_dupe_ids
 
           - name: status
-            description: "Is it Open or Closed?"
+            description: "Is the greeting Open or Closed?"
             tests:
                 - accepted_values:
                     arguments:
                       values: ['Open','Closed']
 
     - name: my_second_dbt_model
-      description: "Child model used to demonstrate relationship tests."
+      description: "Child model, referencing my_first_dbt_model, used to demonstrate relationship tests."
       columns:
           - name: parent_id
             description: "Foreign key referencing my_first_dbt_model.id"

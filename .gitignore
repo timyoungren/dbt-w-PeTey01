@@ -9,6 +9,7 @@ env/
 # Ignore dbt artifactstarget/
 dbt_packages/
 logs/
+target/
 
 # Python
 __pycache__/

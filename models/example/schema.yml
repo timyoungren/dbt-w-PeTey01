@@ -74,3 +74,4 @@ models:
                     arguments:
                       to: ref('my_first_dbt_model')
                       field: id
+                      

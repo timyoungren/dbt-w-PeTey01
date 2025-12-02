@@ -1,0 +1,39 @@
+
+version: 2
+
+models:
+    - name: stg_customers
+      description: "A couple rows of customer data from customers.csv in the seeds folder."
+      columns:
+          - name: customer_id
+            description: "int64 value to identify customers."
+            tests:
+                - unique
+                - not_null
+
+          - name: signup_date
+            description: "When the customer signed up."
+            tests:
+                - no_future_dates
+
+    - name: stg_orders
+      description: "A couple rows of order data from orders.csv in the seeds folder."
+      columns:
+          - name: order_id
+            description: "int64 value to identify orders."
+            tests:
+                - unique
+                - not_null
+
+          - name: order_date
+            description: "When the customer signed up."
+            tests:
+                - no_future_dates
+
+          - name: customer_id
+            tests:
+                - relationships:
+                    arguments:
+                      to: ref('stg_customers')
+                      field: customer_id
+

@@ -1,6 +1,6 @@
 
 /*
-    Welcome to your first dbt staging model!
+    Is dbt running this model when I try to call it?!
     Did you know that you can also configure models directly within SQL files?
     This will override configurations stated in dbt_project.yml
 
@@ -15,6 +15,7 @@ with source as (
         cast(id as int64)       as customer_id
         , first_name
         , last_name
+        , hh_size
         , cast(signup_date as date) as signup_date
     from {{ source('raw', 'customers')}}
 
@@ -26,6 +27,7 @@ final as (
         customer_id
         , first_name
         , last_name
+        , hh_size
         , signup_date
         , current_timestamp() as record_loaded_at
     from source

@@ -16,8 +16,10 @@ with source as (
         , {{ safe_divide( 'count(o.order_id)', 'cx1.hh_size' ) }} as orders_per_person
         , cx1.hh_size
         , count(o.order_id) as order_count
+        , cx1.first_name
+        , {{ clean_string( 'cx1.first_name' )}} as fn_clean
     from {{ ref('stg_customers') }} AS cx1 LEFT JOIN {{ ref('stg_orders') }} AS o ON cx1.customer_id = o.customer_id
-    group by cx1.customer_id, cx1.hh_size
+    group by cx1.customer_id, cx1.hh_size, cx1.first_name
 
 ),
 
@@ -28,6 +30,8 @@ final as (
         , orders_per_person
         , hh_size
         , order_count
+        , first_name
+        , fn_clean
     from source
 
 )

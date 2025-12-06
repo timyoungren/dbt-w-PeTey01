@@ -14,6 +14,7 @@ with source as (
     select 
         cast(id as int64)       as order_id
         , cast(customer_id as int64)       as customer_id
+        , cast(price as int64) as price
         , cast(order_date as date) as order_date
         , status as order_status
     from {{ source('raw', 'orders')}}
@@ -25,6 +26,7 @@ final as (
     select 
         order_id
         , customer_id
+        , price
         , order_date
         , order_status
         , current_timestamp() as record_loaded_at
